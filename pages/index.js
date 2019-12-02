@@ -1,12 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import MainViewer from "../components/MainViewer";
 import ThumbsViewer from "../components/ThumbsViewer";
+import GridViewer from "../components/GridViewer";
 import styled from "styled-components";
 import Head from "next/head";
 
 const ViewerLayout = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 5fr;
   height: 100vh;
@@ -15,12 +14,16 @@ const ViewerLayout = styled.div`
 
 const IndexPage = () => {
   const [pageHeight, setPageHeight] = useState(500);
+  const [pageWidth, setPageWidth] = useState(1000);
+  const [isGridVisible, setIsGridVisible] = useState(false);
   const mainViewerRef = useRef(null);
   const thumbsViewerRef = useRef(null);
+  const viewerLayoutRef = useRef(null);
 
   useEffect(() => {
     function handleResize() {
       setPageHeight(window.innerHeight);
+      setPageWidth(window.innerWidth);
     }
 
     window.addEventListener("resize", handleResize);
@@ -43,12 +46,21 @@ const IndexPage = () => {
           padding: 0;
         }
       `}</style>
-      <ViewerLayout>
-        <ThumbsViewer
-          listHeight={pageHeight}
+      <button
+        style={{ position: "fixed", top: "5px", right: "5px", zIndex: 3 }}
+        onClick={() => setIsGridVisible(!isGridVisible)}
+      >
+        {isGridVisible ? "hide" : "show"} grid
+      </button>
+      <ViewerLayout ref={viewerLayoutRef}>
+        <GridViewer
+          gridHeight={pageHeight}
+          gridWidth={pageWidth}
+          isVisible={isGridVisible}
           mainViewerRef={mainViewerRef}
-          thumbsViewerRef={thumbsViewerRef}
+          setIsGridVisible={setIsGridVisible}
         />
+        <ThumbsViewer listHeight={pageHeight} mainViewerRef={mainViewerRef} />
         <MainViewer listHeight={pageHeight} mainViewerRef={mainViewerRef} />
       </ViewerLayout>
     </>

@@ -39,7 +39,7 @@ class ItemRenderer extends PureComponent {
   }
 }
 
-const ThumbsViewer = ({ listHeight, mainViewerRef, thumbsViewerRef }) => {
+const ThumbsViewer = ({ listHeight, mainViewerRef }) => {
   const [newScrollOffset, setNewScrollOffset] = useState(0);
   const scrollVelocity = useScrollVelocity(newScrollOffset);
 
@@ -49,7 +49,6 @@ const ThumbsViewer = ({ listHeight, mainViewerRef, thumbsViewerRef }) => {
 
   return (
     <FixedSizeList
-      ref={thumbsViewerRef}
       height={listHeight}
       itemCount={imageData.length}
       itemSize={0.2 * listHeight}
