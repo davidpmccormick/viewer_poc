@@ -7,9 +7,13 @@ import Head from "next/head";
 
 const ViewerLayout = styled.div`
   display: grid;
-  grid-template-columns: 1fr 5fr;
+  grid-template-columns: 1fr;
   height: 100vh;
   position: relative;
+
+  @media (min-width: 600px) {
+    grid-template-columns: 1fr 5fr;
+  }
 `;
 
 const IndexPage = () => {
@@ -62,12 +66,14 @@ const IndexPage = () => {
           activeIndex={activeIndex}
           setActiveIndex={setActiveIndex}
         />
-        <ThumbsViewer
-          listHeight={pageHeight}
-          mainViewerRef={mainViewerRef}
-          activeIndex={activeIndex}
-          setActiveIndex={setActiveIndex}
-        />
+        {pageWidth >= 600 && (
+          <ThumbsViewer
+            listHeight={pageHeight}
+            mainViewerRef={mainViewerRef}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+          />
+        )}
         <MainViewer
           listHeight={pageHeight}
           mainViewerRef={mainViewerRef}
