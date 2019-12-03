@@ -1,48 +1,45 @@
-import { FixedSizeList } from "react-window";
+import { FixedSizeList, areEqual } from "react-window";
 import imageData from "../data";
-import { PureComponent, useState } from "react";
+import { useState, memo } from "react";
 import useScrollVelocity from "../hooks/useScrollVelocity";
 import Loader from "./Loader";
 
-class ItemRenderer extends PureComponent {
-  render() {
-    const { style, index, data } = this.props;
-    const { mainViewerRef, scrollVelocity, activeIndex, setActiveIndex } = data;
+const ItemRenderer = memo(({ style, index, data }) => {
+  const { mainViewerRef, scrollVelocity, activeIndex, setActiveIndex } = data;
 
-    return (
-      <div
-        style={style}
-        onClick={() => {
-          mainViewerRef &&
-            mainViewerRef.current &&
-            mainViewerRef.current.scrollToItem(index, "start");
+  return (
+    <div
+      style={style}
+      onClick={() => {
+        mainViewerRef &&
+          mainViewerRef.current &&
+          mainViewerRef.current.scrollToItem(index, "start");
 
-          setActiveIndex(index);
-        }}
-      >
-        {scrollVelocity > 1 ? (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Loader />
-          </div>
-        ) : (
-          <img
-            style={{
-              display: "block",
-              height: "95%",
-              width: "auto",
-              margin: "5px auto 0",
-              border: `3px solid ${
-                activeIndex === index ? "yellow" : "transparent"
-              }`
-            }}
-            src={imageData[index]}
-            alt=""
-          />
-        )}
-      </div>
-    );
-  }
-}
+        setActiveIndex(index);
+      }}
+    >
+      {scrollVelocity > 1 ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Loader />
+        </div>
+      ) : (
+        <img
+          style={{
+            display: "block",
+            height: "95%",
+            width: "auto",
+            margin: "5px auto 0",
+            border: `3px solid ${
+              activeIndex === index ? "yellow" : "transparent"
+            }`
+          }}
+          src={imageData[index]}
+          alt=""
+        />
+      )}
+    </div>
+  );
+}, areEqual);
 
 const ThumbsViewer = ({
   listHeight,
