@@ -7,7 +7,7 @@ import Loader from "./Loader";
 class ItemRenderer extends PureComponent {
   render() {
     const { style, index, data } = this.props;
-    const { mainViewerRef, scrollVelocity } = data;
+    const { mainViewerRef, scrollVelocity, activeIndex, setActiveIndex } = data;
 
     return (
       <div
@@ -16,6 +16,8 @@ class ItemRenderer extends PureComponent {
           mainViewerRef &&
             mainViewerRef.current &&
             mainViewerRef.current.scrollToItem(index, "start");
+
+          setActiveIndex(index);
         }}
       >
         {scrollVelocity > 1 ? (
@@ -28,9 +30,12 @@ class ItemRenderer extends PureComponent {
               display: "block",
               height: "95%",
               width: "auto",
-              margin: "5px auto 0"
+              margin: "5px auto 0",
+              border: `3px solid ${
+                activeIndex === index ? "yellow" : "transparent"
+              }`
             }}
-            src={imageData[index + 1]}
+            src={imageData[index]}
             alt=""
           />
         )}
@@ -39,7 +44,12 @@ class ItemRenderer extends PureComponent {
   }
 }
 
-const ThumbsViewer = ({ listHeight, mainViewerRef }) => {
+const ThumbsViewer = ({
+  listHeight,
+  mainViewerRef,
+  activeIndex,
+  setActiveIndex
+}) => {
   const [newScrollOffset, setNewScrollOffset] = useState(0);
   const scrollVelocity = useScrollVelocity(newScrollOffset);
 
@@ -56,7 +66,9 @@ const ThumbsViewer = ({ listHeight, mainViewerRef }) => {
       onScroll={handleOnScroll}
       itemData={{
         mainViewerRef,
-        scrollVelocity
+        scrollVelocity,
+        activeIndex,
+        setActiveIndex
       }}
     >
       {ItemRenderer}

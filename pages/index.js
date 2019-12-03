@@ -13,11 +13,11 @@ const ViewerLayout = styled.div`
 `;
 
 const IndexPage = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const [pageHeight, setPageHeight] = useState(500);
   const [pageWidth, setPageWidth] = useState(1000);
   const [isGridVisible, setIsGridVisible] = useState(false);
   const mainViewerRef = useRef(null);
-  const thumbsViewerRef = useRef(null);
   const viewerLayoutRef = useRef(null);
 
   useEffect(() => {
@@ -59,9 +59,20 @@ const IndexPage = () => {
           isVisible={isGridVisible}
           mainViewerRef={mainViewerRef}
           setIsGridVisible={setIsGridVisible}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
         />
-        <ThumbsViewer listHeight={pageHeight} mainViewerRef={mainViewerRef} />
-        <MainViewer listHeight={pageHeight} mainViewerRef={mainViewerRef} />
+        <ThumbsViewer
+          listHeight={pageHeight}
+          mainViewerRef={mainViewerRef}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
+        />
+        <MainViewer
+          listHeight={pageHeight}
+          mainViewerRef={mainViewerRef}
+          setActiveIndex={setActiveIndex}
+        />
       </ViewerLayout>
     </>
   );

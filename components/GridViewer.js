@@ -13,9 +13,11 @@ class Cell extends PureComponent {
       imageData,
       mainViewerRef,
       setIsGridVisible,
-      scrollVelocity
+      scrollVelocity,
+      activeIndex,
+      setActiveIndex
     } = data;
-    const itemNumber = rowIndex * columnCount + columnIndex;
+    const itemIndex = rowIndex * columnCount + columnIndex;
 
     return (
       <div
@@ -23,8 +25,8 @@ class Cell extends PureComponent {
         onClick={() => {
           mainViewerRef &&
             mainViewerRef.current &&
-            mainViewerRef.current.scrollToItem(itemNumber);
-
+            mainViewerRef.current.scrollToItem(itemIndex);
+          setActiveIndex(itemIndex);
           setIsGridVisible(false);
         }}
       >
@@ -41,8 +43,14 @@ class Cell extends PureComponent {
             </div>
           ) : (
             <img
-              style={{ width: "130px", display: "block" }}
-              src={imageData[itemNumber]}
+              style={{
+                width: "130px",
+                display: "block",
+                border: `5px solid ${
+                  activeIndex === itemIndex ? "yellow" : "transparent"
+                }`
+              }}
+              src={imageData[itemIndex]}
               alt=""
             />
           )}
@@ -70,7 +78,9 @@ const GridViewer = ({
   gridWidth,
   isVisible,
   mainViewerRef,
-  setIsGridVisible
+  setIsGridVisible,
+  activeIndex,
+  setActiveIndex
 }) => {
   const [newScrollOffset, setNewScrollOffset] = useState(0);
   const scrollVelocity = useScrollVelocity(newScrollOffset);
@@ -92,7 +102,9 @@ const GridViewer = ({
           columnCount,
           mainViewerRef,
           setIsGridVisible,
-          scrollVelocity
+          scrollVelocity,
+          activeIndex,
+          setActiveIndex
         }}
         onScroll={({ scrollTop }) => setNewScrollOffset(scrollTop)}
       >

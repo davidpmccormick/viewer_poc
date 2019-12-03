@@ -55,7 +55,7 @@ class ItemRenderer extends PureComponent {
   }
 }
 
-const MainViewer = ({ listHeight, mainViewerRef }) => {
+const MainViewer = ({ listHeight, mainViewerRef, setActiveIndex }) => {
   const [isProgrammaticScroll, setIsProgrammaticScroll] = useState(false);
   const [newScrollOffset, setNewScrollOffset] = useState(0);
   const scrollVelocity = useScrollVelocity(newScrollOffset);
