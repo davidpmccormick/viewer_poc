@@ -72,6 +72,7 @@ const IndexPage = () => {
           listHeight={pageHeight}
           mainViewerRef={mainViewerRef}
           setActiveIndex={setActiveIndex}
+          pageWidth={pageWidth}
         />
       </ViewerLayout>
     </>

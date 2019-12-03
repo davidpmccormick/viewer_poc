@@ -50,13 +50,19 @@ const ItemRenderer = memo(({ style, index, data }) => {
   );
 }, areEqual);
 
-const MainViewer = ({ listHeight, mainViewerRef, setActiveIndex }) => {
+const MainViewer = ({
+  listHeight,
+  mainViewerRef,
+  setActiveIndex,
+  pageWidth
+}) => {
   const [isProgrammaticScroll, setIsProgrammaticScroll] = useState(false);
   const [newScrollOffset, setNewScrollOffset] = useState(0);
   const scrollVelocity = useScrollVelocity(newScrollOffset);
   const debounceHandleOnItemsRendered = useRef(
     debounce(handleOnItemsRendered, 500)
   );
+  const itemHeight = pageWidth * 0.8;
 
   function handleOnScroll({ scrollOffset, scrollUpdateWasRequested }) {
     setNewScrollOffset(scrollOffset);
@@ -70,23 +76,22 @@ const MainViewer = ({ listHeight, mainViewerRef, setActiveIndex }) => {
   }
 
   return (
-    <div style={{ width: "500px", margin: "0 auto" }}>
-      <FixedSizeList
-        height={listHeight}
-        itemCount={imageData.length}
-        itemData={{
-          scrollVelocity,
-          isProgrammaticScroll,
-          imageData
-        }}
-        itemSize={0.8 * listHeight}
-        onItemsRendered={debounceHandleOnItemsRendered.current}
-        onScroll={handleOnScroll}
-        ref={mainViewerRef}
-      >
-        {ItemRenderer}
-      </FixedSizeList>
-    </div>
+    <FixedSizeList
+      style={{ width: `${itemHeight}px`, margin: "0 auto" }}
+      height={listHeight}
+      itemCount={imageData.length}
+      itemData={{
+        scrollVelocity,
+        isProgrammaticScroll,
+        imageData
+      }}
+      itemSize={itemHeight}
+      onItemsRendered={debounceHandleOnItemsRendered.current}
+      onScroll={handleOnScroll}
+      ref={mainViewerRef}
+    >
+      {ItemRenderer}
+    </FixedSizeList>
   );
 };
 
